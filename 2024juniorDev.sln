@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibLogistica", "LibLogistica\LibLogistica.csproj", "{44F034D9-A10B-46E5-84B1-1D2B35124556}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistic1", "Logistic1\Logistic1.csproj", "{A6C6B189-8AEC-411A-B82F-D956E8A6647A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44F034D9-A10B-46E5-84B1-1D2B35124556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F034D9-A10B-46E5-84B1-1D2B35124556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F034D9-A10B-46E5-84B1-1D2B35124556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F034D9-A10B-46E5-84B1-1D2B35124556}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C6B189-8AEC-411A-B82F-D956E8A6647A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C6B189-8AEC-411A-B82F-D956E8A6647A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C6B189-8AEC-411A-B82F-D956E8A6647A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C6B189-8AEC-411A-B82F-D956E8A6647A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
