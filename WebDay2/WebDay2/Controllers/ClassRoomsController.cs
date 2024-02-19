@@ -9,30 +9,22 @@ using WebDay2.Models;
 
 namespace WebDay2.Controllers
 {
-    //https://github.com/lbarozzi/2024juniorDev.git
-    public class StudentsController : Controller
+    public class ClassRoomsController : Controller
     {
         private readonly DataContext _context;
 
-        public StudentsController(DataContext context)
+        public ClassRoomsController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: Students
+        // GET: ClassRooms
         public async Task<IActionResult> Index()
         {
-
-            ViewData["anta"] = await  _context.Students
-                                    .Where(std => std.IsActive == false)
-                                    .ToListAsync();
-
-            return View(await _context.Students
-                                .Where(std=>std.IsActive)
-                                .ToListAsync());
+            return View(await _context.ClassRoom.ToListAsync());
         }
 
-        // GET: Students/Details/5
+        // GET: ClassRooms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,39 +32,39 @@ namespace WebDay2.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.StudentID == id);
-            if (student == null)
+            var classRoom = await _context.ClassRoom
+                .FirstOrDefaultAsync(m => m.ClassRoomID == id);
+            if (classRoom == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(classRoom);
         }
 
-        // GET: Students/Create
+        // GET: ClassRooms/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Students/Create
+        // POST: ClassRooms/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StudentID,FirstName,LastName,DOB,Email,IsActive")] Student student)
+        public async Task<IActionResult> Create([Bind("ClassRoomID,Description,IsActive")] ClassRoom classRoom)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                _context.Add(classRoom);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(classRoom);
         }
 
-        // GET: Students/Edit/5
+        // GET: ClassRooms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,22 +72,22 @@ namespace WebDay2.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            var classRoom = await _context.ClassRoom.FindAsync(id);
+            if (classRoom == null)
             {
                 return NotFound();
             }
-            return View(student);
+            return View(classRoom);
         }
 
-        // POST: Students/Edit/5
+        // POST: ClassRooms/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StudentID,FirstName,LastName,DOB,Email,IsActive")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("ClassRoomID,Description,IsActive")] ClassRoom classRoom)
         {
-            if (id != student.StudentID)
+            if (id != classRoom.ClassRoomID)
             {
                 return NotFound();
             }
@@ -104,12 +96,12 @@ namespace WebDay2.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    _context.Update(classRoom);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.StudentID))
+                    if (!ClassRoomExists(classRoom.ClassRoomID))
                     {
                         return NotFound();
                     }
@@ -120,10 +112,10 @@ namespace WebDay2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(classRoom);
         }
 
-        // GET: Students/Delete/5
+        // GET: ClassRooms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,34 +123,34 @@ namespace WebDay2.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.StudentID == id);
-            if (student == null)
+            var classRoom = await _context.ClassRoom
+                .FirstOrDefaultAsync(m => m.ClassRoomID == id);
+            if (classRoom == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(classRoom);
         }
 
-        // POST: Students/Delete/5
+        // POST: ClassRooms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Students.FindAsync(id);
-            if (student != null)
+            var classRoom = await _context.ClassRoom.FindAsync(id);
+            if (classRoom != null)
             {
-                _context.Students.Remove(student);
+                _context.ClassRoom.Remove(classRoom);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
+        private bool ClassRoomExists(int id)
         {
-            return _context.Students.Any(e => e.StudentID == id);
+            return _context.ClassRoom.Any(e => e.ClassRoomID == id);
         }
     }
 }
