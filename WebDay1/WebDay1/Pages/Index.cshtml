@@ -1,0 +1,58 @@
+﻿@page
+@model IndexModel
+@{
+    //Layout = "";
+    ViewData["Title"] = "Home page";
+    string CiccioCiccio = "";
+    if (ViewData.Keys.Contains("SuperPippo"))
+        CiccioCiccio = ViewData["SuperPippo"] as string ??"";
+    //CiccioCiccio = ViewBag.SuperPippo;
+    
+    //string Antanti = ViewData["SuperPippo"] as string ?? "";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @Model.FirstName</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<ul>
+@for(int a = 0; a < 10; a++) {
+    <li>Ciao @@ @a</li>
+}
+</ul>
+<hr />
+<ol>
+@if(ViewBag.Rubrica==null || ViewBag.Rubrica.Elenco.Count==0) {
+    <li>EmptyList</li>
+} else {
+    @foreach(var v1 in ViewBag.Rubrica.Elenco) {
+        <li>@v1</li>
+    }
+}
+</ol>
+<hr />
+<hr />
+<ol>
+    @if (ViewBag.Rubrica_EF == null || ViewBag.Rubrica_EF.Count == 0) {
+        <li>EmptyList</li>
+    } else {
+        @foreach (var v1 in ViewBag.Rubrica_EF) {
+            <li>@v1</li>
+        }
+    }
+</ol>
+<hr />
+<form method="post">
+    <input type="text" name="firstName" value="Leonardo" />
+    <input type="text" name="lastName"  value="Barozzi"/>
+    <input type="date" name="DOB"   value="23/06/1972"/>
+    <input type="submit" value="Add"/>
+ 
+</form>
+
+
+@if(false) {
+    
+}
+<p>Ma la volpe col suo balzo ha raggiunto il quieto fido</p>
