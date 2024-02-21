@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Edit";
+    SelectList listData = new SelectList(ViewBag.Students,
+                                        nameof(Student.StudentID),
+                                        nameof(Student.LastName)
+                                );
 }
 
 <h1>Edit</h1>
@@ -29,7 +33,20 @@
         </form>
     </div>
 </div>
-
+<hr />
+<ul>
+@foreach(Student std in ViewBag.Students) {
+    <li><a asp-route-StudentId="@std.StudentID" asp-route-ClassRoomId="@Model.ClassRoomID">
+        @std.FirstName  @std.LastName</a>
+    </li>
+}
+</ul>
+<hr />
+<h3>test SelectList</h3>
+<select asp-items="@listData">
+    
+</select>
+<hr />
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

@@ -5,28 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
-using WebDay2.Models;
-using NuGet.Versioning;
+using WebDay3.Data;
+using WebDay3.Models;
 
-namespace WebDay2.Controllers
+namespace WebDay3.Controllers
 {
-    public class ClassRoomsController : Controller
+    public class StudentsController : Controller
     {
-        private readonly DataContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ClassRoomsController(DataContext context)
+        public StudentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: ClassRooms
+        // GET: Students
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ClassRoom.ToListAsync());
+            return View(await _context.Students.ToListAsync());
         }
 
-        // GET: ClassRooms/Details/5
+        // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +33,39 @@ namespace WebDay2.Controllers
                 return NotFound();
             }
 
-            var classRoom = await _context.ClassRoom
-                .FirstOrDefaultAsync(m => m.ClassRoomID == id);
-            if (classRoom == null)
+            var student = await _context.Students
+                .FirstOrDefaultAsync(m => m.StudentID == id);
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(classRoom);
+            return View(student);
         }
 
-        // GET: ClassRooms/Create
+        // GET: Students/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: ClassRooms/Create
+        // POST: Students/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassRoomID,Description,IsActive")] ClassRoom classRoom)
+        public async Task<IActionResult> Create([Bind("StudentID,FirstName,LastName,DOB")] Student student)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(classRoom);
+                _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(classRoom);
+            return View(student);
         }
 
-        // GET: ClassRooms/Edit/5
+        // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,33 +73,22 @@ namespace WebDay2.Controllers
                 return NotFound();
             }
 
-            var classRoom = await _context.ClassRoom
-                                                    .Include(sd => sd.Students)
-                                                    .Where(cl => cl.ClassRoomID == id)
-                                                    .FirstOrDefaultAsync();
- 
-            if (classRoom == null)
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
-
-            var studentsAvail = await _context.Students
-                                            .Where(std => std.IsActive)
-                                            .ToListAsync();
-
-            ViewData["Students"] = studentsAvail;
-
-            return View(classRoom);
+            return View(student);
         }
 
-        // POST: ClassRooms/Edit/5
+        // POST: Students/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClassRoomID,Description,IsActive")] ClassRoom classRoom)
+        public async Task<IActionResult> Edit(int id, [Bind("StudentID,FirstName,LastName,DOB")] Student student)
         {
-            if (id != classRoom.ClassRoomID)
+            if (id != student.StudentID)
             {
                 return NotFound();
             }
@@ -109,12 +97,12 @@ namespace WebDay2.Controllers
             {
                 try
                 {
-                    _context.Update(classRoom);
+                    _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClassRoomExists(classRoom.ClassRoomID))
+                    if (!StudentExists(student.StudentID))
                     {
                         return NotFound();
                     }
@@ -125,10 +113,10 @@ namespace WebDay2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(classRoom);
+            return View(student);
         }
 
-        // GET: ClassRooms/Delete/5
+        // GET: Students/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,34 +124,34 @@ namespace WebDay2.Controllers
                 return NotFound();
             }
 
-            var classRoom = await _context.ClassRoom
-                .FirstOrDefaultAsync(m => m.ClassRoomID == id);
-            if (classRoom == null)
+            var student = await _context.Students
+                .FirstOrDefaultAsync(m => m.StudentID == id);
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(classRoom);
+            return View(student);
         }
 
-        // POST: ClassRooms/Delete/5
+        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var classRoom = await _context.ClassRoom.FindAsync(id);
-            if (classRoom != null)
+            var student = await _context.Students.FindAsync(id);
+            if (student != null)
             {
-                _context.ClassRoom.Remove(classRoom);
+                _context.Students.Remove(student);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClassRoomExists(int id)
+        private bool StudentExists(int id)
         {
-            return _context.ClassRoom.Any(e => e.ClassRoomID == id);
+            return _context.Students.Any(e => e.StudentID == id);
         }
     }
 }

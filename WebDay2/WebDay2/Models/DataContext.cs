@@ -7,6 +7,6 @@ namespace WebDay2.Models {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         public DbSet<Student> Students { get; set; }
-        public DbSet<WebDay2.Models.ClassRoom> ClassRoom { get; set; } = default!;
+        public DbSet<ClassRoom> ClassRoom { get; set; } = default!;
     }
 }
