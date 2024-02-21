@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,24 +13,22 @@ using WebDay3.Models;
 namespace WebDay3.Controllers
 {
     [Authorize]
-    public class StudentsController : Controller
+    public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //[AllowAnonymous]
-        public StudentsController(ApplicationDbContext context)
+
+        public AppointmentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Students
+        // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            ViewBag.Studens=_context.Users.ToList();
-
-            return View(await _context.Students.ToListAsync());
+            return View(await _context.Appointment.ToListAsync());
         }
 
-        // GET: Students/Details/5
+        // GET: Appointments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,41 +36,47 @@ namespace WebDay3.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.StudentID == id);
-            if (student == null)
+            var appointment = await _context.Appointment
+                .FirstOrDefaultAsync(m => m.AppointmentID == id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(appointment);
         }
 
-        // GET: Students/Create
+        // GET: Appointments/Create
         public IActionResult Create()
         {
+            var ulist = _context.Users
+                .Where(x => x.Id != (User.Identity as IdentityUser).Id)
+                .ToList();
+            ViewData["ulist"] = new SelectList(ulist,
+                                            nameof(IdentityUser.Id),
+                                            nameof(IdentityUser.UserName));
+
             return View();
         }
 
-        // POST: Students/Create
+        // POST: Appointments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StudentID,FirstName,LastName,DOB")] Student student)
+        public async Task<IActionResult> Create(
+            [Bind("AppointmentID,Title,AppointementDate")] Appointment appointment)
         {
-            ModelState.Clear();
-            TryValidateModel(student,nameof(student));
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(appointment);
         }
 
-        // GET: Students/Edit/5
+        // GET: Appointments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,22 +84,22 @@ namespace WebDay3.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            var appointment = await _context.Appointment.FindAsync(id);
+            if (appointment == null)
             {
                 return NotFound();
             }
-            return View(student);
+            return View(appointment);
         }
 
-        // POST: Students/Edit/5
+        // POST: Appointments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StudentID,FirstName,LastName,DOB")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("AppointmentID,Title,AppointementDate")] Appointment appointment)
         {
-            if (id != student.StudentID)
+            if (id != appointment.AppointmentID)
             {
                 return NotFound();
             }
@@ -103,12 +108,12 @@ namespace WebDay3.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    _context.Update(appointment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.StudentID))
+                    if (!AppointmentExists(appointment.AppointmentID))
                     {
                         return NotFound();
                     }
@@ -119,10 +124,10 @@ namespace WebDay3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(appointment);
         }
 
-        // GET: Students/Delete/5
+        // GET: Appointments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,34 +135,34 @@ namespace WebDay3.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.StudentID == id);
-            if (student == null)
+            var appointment = await _context.Appointment
+                .FirstOrDefaultAsync(m => m.AppointmentID == id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(appointment);
         }
 
-        // POST: Students/Delete/5
+        // POST: Appointments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Students.FindAsync(id);
-            if (student != null)
+            var appointment = await _context.Appointment.FindAsync(id);
+            if (appointment != null)
             {
-                _context.Students.Remove(student);
+                _context.Appointment.Remove(appointment);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
+        private bool AppointmentExists(int id)
         {
-            return _context.Students.Any(e => e.StudentID == id);
+            return _context.Appointment.Any(e => e.AppointmentID == id);
         }
     }
 }

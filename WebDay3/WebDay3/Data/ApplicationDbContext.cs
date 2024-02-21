@@ -9,5 +9,6 @@ namespace WebDay3.Data {
         }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<WebDay3.Models.Appointment> Appointment { get; set; } = default!;
     }
 }
